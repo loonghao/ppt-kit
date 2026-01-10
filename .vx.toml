@@ -1,0 +1,32 @@
+# VX Environment Configuration for PPT-KIT
+# 
+# This file configures the vx environment manager for the project.
+# Use `vx <command>` to run commands in the configured environment.
+#
+# Examples:
+#   vx npm install
+#   vx vite
+#   vx just dev
+#   vx just build
+
+[env]
+# Node.js version requirement
+NODE_VERSION = ">=18.0.0"
+
+[tools]
+# Required tools for development
+node = ">=18"
+npm = ">=9"
+just = ">=1.0"
+
+[aliases]
+# Command aliases for convenience
+dev = "npm run dev"
+build = "npm run build"
+lint = "npm run lint"
+mcp = "npm run mcp:server"
+
+[scripts]
+# Custom scripts that can be run with `vx run <script>`
+setup = "npm install && npx office-addin-dev-certs install"
+clean = "rm -rf dist node_modules/.vite"
