@@ -233,3 +233,25 @@ package-store:
     @cp manifest/manifest.prod.xml release/manifest.xml
     @cp -r dist/* release/
     @echo "Package ready in release/ directory"
+
+# ============================================================================
+# GitHub Pages Deployment
+# ============================================================================
+
+# Build for GitHub Pages (with base path)
+build-pages repo="ppt-kit":
+    VITE_BASE_PATH=/{{repo}}/ npm run build
+
+# Generate manifest for GitHub Pages
+gen-pages-manifest repo="ppt-kit" owner="loonghao":
+    @echo "Generating manifest for: https://{{owner}}.github.io/{{repo}}"
+    @sed -e 's|https://localhost:5000|https://{{owner}}.github.io/{{repo}}|g' \
+         -e 's|https://localhost:3000|https://{{owner}}.github.io/{{repo}}|g' \
+         manifest/manifest.local.xml > dist/manifest.xml
+    @echo "Manifest generated: dist/manifest.xml"
+
+# Full GitHub Pages build (build + manifest)
+pages repo="ppt-kit" owner="loonghao": (build-pages repo) (gen-pages-manifest repo owner)
+    @echo "=== GitHub Pages Build Complete ==="
+    @echo "Deploy dist/ to GitHub Pages"
+    @echo "Users can download manifest from: https://{{owner}}.github.io/{{repo}}/manifest.xml"
