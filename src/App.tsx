@@ -1,56 +1,48 @@
-import { useState } from 'react'
-import { TabList, Tab, SelectTabEvent, SelectTabData } from '@fluentui/react-components'
-import { 
-  DocumentBulletList24Regular, 
-  Settings24Regular, 
-  PlugConnected24Regular 
-} from '@fluentui/react-icons'
+import { useState, useCallback } from 'react'
+import ImageLayoutPanel from './components/Layout/ImageLayoutPanel'
+import TextToolsPanel from './components/Layout/TextToolsPanel'
+import TemplatesPanel from './components/Layout/TemplatesPanel'
+import ShapesPanel from './components/Layout/ShapesPanel'
 import TaskPane from './components/TaskPane'
 import SettingsPanel from './components/Settings/SettingsPanel'
 import MCPPanel from './components/MCP/MCPPanel'
-
-type TabValue = 'convert' | 'settings' | 'mcp'
+import RibbonToolbar, { TabValue } from './components/RibbonToolbar/RibbonToolbar'
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<TabValue>('convert')
+  const [selectedTab, setSelectedTab] = useState<TabValue>('images')
 
-  const handleTabSelect = (_event: SelectTabEvent, data: SelectTabData) => {
-    setSelectedTab(data.value as TabValue)
-  }
+  const handleTabChange = useCallback((tab: TabValue) => {
+    setSelectedTab(tab)
+  }, [])
+
+  const handleAction = useCallback((action: string, params?: unknown) => {
+    console.log('Action:', action, params)
+    // TODO: Implement alignment and distribution actions
+  }, [])
 
   return (
-    <div className="flex flex-col h-screen bg-surface">
+    <div className="flex flex-col h-screen bg-theme">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 bg-white border-b border-surface-tertiary">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-pressed flex items-center justify-center">
-            <span className="text-white font-semibold text-sm">P</span>
+      <header className="app-header">
+        <div className="app-logo">
+          <div className="app-logo-icon">
+            <span>P</span>
           </div>
-          <h1 className="text-heading text-text-primary">PPT-KIT</h1>
+          <h1 className="app-title">
+            PPT<span className="app-title-accent">-KIT</span>
+          </h1>
         </div>
       </header>
 
-      {/* Tab Navigation */}
-      <nav className="px-4 pt-2 bg-white border-b border-surface-tertiary">
-        <TabList 
-          selectedValue={selectedTab} 
-          onTabSelect={handleTabSelect}
-          size="medium"
-        >
-          <Tab value="convert" icon={<DocumentBulletList24Regular />}>
-            转换
-          </Tab>
-          <Tab value="settings" icon={<Settings24Regular />}>
-            设置
-          </Tab>
-          <Tab value="mcp" icon={<PlugConnected24Regular />}>
-            MCP
-          </Tab>
-        </TabList>
-      </nav>
+      {/* Ribbon Toolbar */}
+      <RibbonToolbar onTabChange={handleTabChange} onAction={handleAction} />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden bg-theme-secondary">
+        {selectedTab === 'images' && <ImageLayoutPanel />}
+        {selectedTab === 'text' && <TextToolsPanel />}
+        {selectedTab === 'templates' && <TemplatesPanel />}
+        {selectedTab === 'shapes' && <ShapesPanel />}
         {selectedTab === 'convert' && <TaskPane />}
         {selectedTab === 'settings' && <SettingsPanel />}
         {selectedTab === 'mcp' && <MCPPanel />}

@@ -43,9 +43,12 @@
           <FunctionFile resid="Commands.Url"/>
           
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabHome">
-              <Group id="CommandsGroup">
-                <Label resid="CommandsGroup.Label"/>
+            <CustomTab id="PPTKitTab">
+              <Label resid="PPTKitTab.Label"/>
+              <InsertAfter>TabDesign</InsertAfter>
+              
+              <Group id="PPTKitGroup.Layout">
+                <Label resid="PPTKitGroup.Layout.Label"/>
                 <Icon>
                   <bt:Image size="16" resid="Icon.16x16"/>
                   <bt:Image size="32" resid="Icon.32x32"/>
@@ -68,8 +71,68 @@
                     <SourceLocation resid="Taskpane.Url"/>
                   </Action>
                 </Control>
+                
+                <Control xsi:type="Button" id="ImageLayoutButton">
+                  <Label resid="ImageLayoutButton.Label"/>
+                  <Supertip>
+                    <Title resid="ImageLayoutButton.Label"/>
+                    <Description resid="ImageLayoutButton.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Layout.16x16"/>
+                    <bt:Image size="32" resid="Icon.Layout.32x32"/>
+                    <bt:Image size="80" resid="Icon.Layout.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
+                
+                <Control xsi:type="Button" id="TemplateButton">
+                  <Label resid="TemplateButton.Label"/>
+                  <Supertip>
+                    <Title resid="TemplateButton.Label"/>
+                    <Description resid="TemplateButton.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Template.16x16"/>
+                    <bt:Image size="32" resid="Icon.Template.32x32"/>
+                    <bt:Image size="80" resid="Icon.Template.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
               </Group>
-            </OfficeTab>
+              
+              <Group id="PPTKitGroup.Tools">
+                <Label resid="PPTKitGroup.Tools.Label"/>
+                <Icon>
+                  <bt:Image size="16" resid="Icon.16x16"/>
+                  <bt:Image size="32" resid="Icon.32x32"/>
+                  <bt:Image size="80" resid="Icon.80x80"/>
+                </Icon>
+                
+                <Control xsi:type="Button" id="AlignButton">
+                  <Label resid="AlignButton.Label"/>
+                  <Supertip>
+                    <Title resid="AlignButton.Label"/>
+                    <Description resid="AlignButton.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Align.16x16"/>
+                    <bt:Image size="32" resid="Icon.Align.32x32"/>
+                    <bt:Image size="80" resid="Icon.Align.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
+                </Control>
+              </Group>
+            </CustomTab>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
@@ -80,6 +143,15 @@
         <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
         <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
         <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+        <bt:Image id="Icon.Layout.16x16" DefaultValue="https://localhost:3000/assets/icon-layout-16.png"/>
+        <bt:Image id="Icon.Layout.32x32" DefaultValue="https://localhost:3000/assets/icon-layout-32.png"/>
+        <bt:Image id="Icon.Layout.80x80" DefaultValue="https://localhost:3000/assets/icon-layout-80.png"/>
+        <bt:Image id="Icon.Template.16x16" DefaultValue="https://localhost:3000/assets/icon-template-16.png"/>
+        <bt:Image id="Icon.Template.32x32" DefaultValue="https://localhost:3000/assets/icon-template-32.png"/>
+        <bt:Image id="Icon.Template.80x80" DefaultValue="https://localhost:3000/assets/icon-template-80.png"/>
+        <bt:Image id="Icon.Align.16x16" DefaultValue="https://localhost:3000/assets/icon-align-16.png"/>
+        <bt:Image id="Icon.Align.32x32" DefaultValue="https://localhost:3000/assets/icon-align-32.png"/>
+        <bt:Image id="Icon.Align.80x80" DefaultValue="https://localhost:3000/assets/icon-align-80.png"/>
       </bt:Images>
       
       <bt:Urls>
@@ -90,13 +162,21 @@
       
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="PPT-KIT 已就绪"/>
-        <bt:String id="CommandsGroup.Label" DefaultValue="PPT-KIT"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="打开 PPT-KIT"/>
+        <bt:String id="PPTKitTab.Label" DefaultValue="PPT-KIT"/>
+        <bt:String id="PPTKitGroup.Layout.Label" DefaultValue="布局"/>
+        <bt:String id="PPTKitGroup.Tools.Label" DefaultValue="工具"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="打开面板"/>
+        <bt:String id="ImageLayoutButton.Label" DefaultValue="图片布局"/>
+        <bt:String id="TemplateButton.Label" DefaultValue="模板"/>
+        <bt:String id="AlignButton.Label" DefaultValue="对齐"/>
       </bt:ShortStrings>
       
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="点击 PPT-KIT 按钮开始使用智能 PPT 生成功能"/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="打开 PPT-KIT 任务面板，使用 Markdown 转 PPT、代码高亮、图表渲染等功能"/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="打开 PPT-KIT 任务面板"/>
+        <bt:String id="ImageLayoutButton.Tooltip" DefaultValue="智能图片布局工具"/>
+        <bt:String id="TemplateButton.Tooltip" DefaultValue="选择和应用模板"/>
+        <bt:String id="AlignButton.Tooltip" DefaultValue="对齐和分布工具"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

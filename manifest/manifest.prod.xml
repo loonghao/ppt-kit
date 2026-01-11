@@ -43,9 +43,12 @@
           <FunctionFile resid="Commands.Url"/>
           
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabHome">
-              <Group id="CommandsGroup">
-                <Label resid="CommandsGroup.Label"/>
+            <CustomTab id="PPTKitTab">
+              <Label resid="PPTKitTab.Label"/>
+              <InsertAfter>TabDesign</InsertAfter>
+              
+              <Group id="PPTKitGroup.Layout">
+                <Label resid="PPTKitGroup.Layout.Label"/>
                 <Icon>
                   <bt:Image size="16" resid="Icon.16x16"/>
                   <bt:Image size="32" resid="Icon.32x32"/>
@@ -69,7 +72,7 @@
                   </Action>
                 </Control>
               </Group>
-            </OfficeTab>
+            </CustomTab>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
@@ -90,8 +93,9 @@
       
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="PPT-KIT 已就绪"/>
-        <bt:String id="CommandsGroup.Label" DefaultValue="PPT-KIT"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="打开 PPT-KIT"/>
+        <bt:String id="PPTKitTab.Label" DefaultValue="PPT-KIT"/>
+        <bt:String id="PPTKitGroup.Layout.Label" DefaultValue="布局"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="打开面板"/>
       </bt:ShortStrings>
       
       <bt:LongStrings>

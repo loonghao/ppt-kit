@@ -4,6 +4,9 @@
 # This file provides convenient commands for development, building, and testing.
 # All commands are designed to work with vx environment manager.
 
+# Set shell for Windows compatibility
+set shell := ["pwsh", "-NoProfile", "-Command"]
+
 # Default recipe - show available commands
 default:
     @just --list
@@ -51,9 +54,13 @@ rebuild: clean build
 # Office Add-in
 # ============================================================================
 
-# Start Office Add-in debugging
+# Start Office Add-in (no debug)
 start:
     npm run start
+
+# Start Office Add-in with debugging
+start-debug:
+    npm run start:debug
 
 # Stop Office Add-in debugging
 stop:

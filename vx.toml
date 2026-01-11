@@ -1,0 +1,65 @@
+# VX Project Configuration
+# This file defines the tools and versions required for this project.
+# Run 'vx setup' to install all required tools.
+# Run 'vx dev' to enter the development environment.
+# Project: ppt-kit
+
+[tools]
+just = "latest"
+node = "20"
+npm = "latest"
+
+[settings]
+# Automatically install missing tools when entering dev environment
+auto_install = true
+# Cache duration for version checks
+cache_duration = "7d"
+
+[scripts]
+add = "just add"
+audit = "just audit"
+build = "npm run build"
+build-all = "just build-all"
+build-mcp = "just build-mcp"
+build-pages = "just build-pages"
+bump-major = "just bump-major"
+bump-minor = "just bump-minor"
+bump-patch = "just bump-patch"
+certs = "just certs"
+clean = "just clean"
+commit = "just commit"
+default = "just default"
+deploy = "just deploy"
+dev = "npm run dev"
+dev-host = "just dev-host"
+docker-build = "just docker-build"
+docker-build-mcp = "just docker-build-mcp"
+docker-down = "just docker-down"
+docker-logs = "just docker-logs"
+docker-up = "just docker-up"
+gen-pages-manifest = "just gen-pages-manifest"
+info = "just info"
+install = "just install"
+lint = "npm run lint"
+lint-fix = "just lint-fix"
+mcp = "just mcp"
+mcp-http = "just mcp-http"
+mcp-port = "just mcp-port"
+mcp:build = "npm run mcp:build"
+mcp:server = "npm run mcp:server"
+package-store = "just package-store"
+pages = "just pages"
+preview = "npm run preview"
+pull = "just pull"
+push = "just push"
+rebuild = "just rebuild"
+reinstall = "just reinstall"
+start = "npm run start"
+start:debug = "npm run start:debug"
+status = "just status"
+stop = "npm run stop"
+test = "just test"
+typecheck = "npx tsc --noEmit"
+update = "just update"
+validate = "npm run validate"
+verify-certs = "just verify-certs"
