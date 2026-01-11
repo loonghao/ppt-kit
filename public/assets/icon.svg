@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E85A3C"/>
+      <stop offset="50%" stop-color="#FF6B4A"/>
+      <stop offset="100%" stop-color="#FF8A65"/>
+    </linearGradient>
+    <linearGradient id="slide" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect x="4" y="4" width="72" height="72" rx="16" fill="url(#bg)"/>
+  <!-- Slide -->
+  <rect x="14" y="16" width="52" height="36" rx="4" fill="url(#slide)"/>
+  <!-- Content lines -->
+  <rect x="20" y="22" width="20" height="5" rx="1" fill="#E85A3C" opacity="0.8"/>
+  <rect x="20" y="32" width="36" height="3" rx="1" fill="#E85A3C" opacity="0.5"/>
+  <rect x="20" y="40" width="28" height="3" rx="1" fill="#E85A3C" opacity="0.4"/>
+  <!-- Navigation dots -->
+  <circle cx="32" cy="62" r="4" fill="white" opacity="0.9"/>
+  <circle cx="44" cy="62" r="4" fill="white" opacity="0.5"/>
+  <circle cx="56" cy="62" r="4" fill="white" opacity="0.5"/>
+</svg>

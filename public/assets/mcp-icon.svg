@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="mcpBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="72" height="72" rx="16" fill="url(#mcpBg)"/>
+  <rect x="14" y="14" width="52" height="52" rx="6" fill="white" opacity="0.9"/>
+  <!-- Terminal prompt -->
+  <path d="M24 30 L32 38 L24 46" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M38 46 L56 46" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+  <!-- Cursor blink -->
+  <rect x="38" y="30" width="3" height="10" rx="1" fill="#10B981" opacity="0.6"/>
+</svg>
