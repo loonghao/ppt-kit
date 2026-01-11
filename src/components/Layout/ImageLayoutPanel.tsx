@@ -733,7 +733,7 @@ export default function ImageLayoutPanel() {
   }, [])
 
   return (
-    <div className="h-full overflow-y-auto p-4 space-y-6">
+    <div className="h-full overflow-y-auto p-3 space-y-4 bg-theme">
       {/* Hidden file input */}
       <input
         ref={fileInputRef}
@@ -747,104 +747,107 @@ export default function ImageLayoutPanel() {
       {/* Loading Overlay */}
       {isLoading && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-40">
-          <div className="bg-surface-secondary px-4 py-2 rounded-lg text-sm text-text-primary">
+          <div className="bg-theme-elevated px-4 py-2 rounded-lg text-sm text-theme shadow-theme-lg">
             处理中...
           </div>
         </div>
       )}
 
       {/* Upload Section */}
-      <section>
+      <section className="section-container">
         <div className="section-header">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="17 8 12 3 7 8" />
             <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
           <span>上传图片</span>
           {uploadedImages.length > 0 && (
-            <span className="text-xs text-text-muted ml-auto">{uploadedImages.length} 张待处理</span>
+            <span className="ml-auto text-xs px-2 py-0.5 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-full">
+              {uploadedImages.length} 张待处理
+            </span>
           )}
         </div>
         
-        <div 
-          onClick={() => fileInputRef.current?.click()}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          className="border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-primary/50 hover:bg-surface-secondary/50 transition-colors"
-        >
-          <svg viewBox="0 0 24 24" className="w-10 h-10 mx-auto mb-2 text-text-muted" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="3" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="M21 15l-5-5L5 21" />
-          </svg>
-          <p className="text-sm text-text-secondary">点击或拖拽上传图片</p>
-          <p className="text-xs text-text-muted mt-1">支持 JPG、PNG、GIF 等格式</p>
-        </div>
+        <div className="section-content">
+          <div 
+            onClick={() => fileInputRef.current?.click()}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            className="upload-zone"
+          >
+            <svg viewBox="0 0 24 24" className="w-10 h-10 mx-auto mb-2 text-theme-muted" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="3" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <path d="M21 15l-5-5L5 21" />
+            </svg>
+            <p className="text-sm text-theme-secondary">点击或拖拽上传图片</p>
+            <p className="text-xs text-theme-muted mt-1">支持 JPG、PNG、GIF 等格式</p>
+          </div>
 
-        {/* Uploaded Images Preview */}
-        {uploadedImages.length > 0 && (
-          <div className="mt-3 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-text-muted">已上传图片</span>
-              <button 
-                onClick={handleClearImages}
-                className="text-xs text-red-400 hover:text-red-300"
+          {/* Uploaded Images Preview */}
+          {uploadedImages.length > 0 && (
+            <div className="mt-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-theme-muted">已上传图片</span>
+                <button 
+                  onClick={handleClearImages}
+                  className="text-xs text-red-500 hover:text-red-400 transition-colors"
+                >
+                  清空全部
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {uploadedImages.slice(0, 8).map((img, index) => (
+                  <div key={index} className="image-thumbnail group">
+                    <img 
+                      src={img} 
+                      alt={`上传图片 ${index + 1}`}
+                    />
+                    <button
+                      onClick={() => handleRemoveImage(index)}
+                      className="image-thumbnail-remove"
+                    >
+                      <svg viewBox="0 0 24 24" className="w-2.5 h-2.5" fill="none" stroke="white" strokeWidth="3">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+                {uploadedImages.length > 8 && (
+                  <div className="w-14 h-14 rounded-lg border-2 border-dashed border-theme flex items-center justify-center text-xs text-theme-muted">
+                    +{uploadedImages.length - 8}
+                  </div>
+                )}
+              </div>
+              
+              <button
+                onClick={handleAddSingleImage}
+                disabled={isLoading || uploadedImages.length === 0}
+                className="w-full btn-primary"
               >
-                清空全部
+                添加单张图片
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {uploadedImages.slice(0, 8).map((img, index) => (
-                <div key={index} className="relative group">
-                  <img 
-                    src={img} 
-                    alt={`上传图片 ${index + 1}`}
-                    className="w-14 h-14 object-cover rounded-lg border border-border"
-                  />
-                  <button
-                    onClick={() => handleRemoveImage(index)}
-                    className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                  >
-                    <svg viewBox="0 0 24 24" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="3">
-                      <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-              {uploadedImages.length > 8 && (
-                <div className="w-14 h-14 rounded-lg border border-border bg-surface-secondary flex items-center justify-center text-xs text-text-muted">
-                  +{uploadedImages.length - 8}
-                </div>
-              )}
-            </div>
-            
-            <button
-              onClick={handleAddSingleImage}
-              disabled={isLoading || uploadedImages.length === 0}
-              className="w-full btn-primary text-sm disabled:opacity-50"
-            >
-              添加单张图片
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
       {/* Use Slide Images Section */}
-      <section>
+      <section className="section-container">
         <div className="section-header">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="2" y="3" width="20" height="14" rx="2" />
             <path d="M8 21h8M12 17v4" />
           </svg>
           <span>幻灯片图片</span>
           {slideImages.length > 0 && (
-            <span className="text-xs text-green-400 ml-2">自动同步中</span>
+            <span className="ml-2 text-xs text-green-500">自动同步中</span>
           )}
           <button
             onClick={handleFetchSlideImages}
             disabled={isLoading}
-            className="ml-auto text-xs text-primary hover:text-primary/80 flex items-center gap-1"
+            className="ml-auto text-xs text-primary-500 hover:text-primary-400 flex items-center gap-1 transition-colors"
           >
             <svg viewBox="0 0 24 24" className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 12a9 9 0 11-6.219-8.56" />
@@ -853,131 +856,127 @@ export default function ImageLayoutPanel() {
           </button>
         </div>
 
-        {slideImages.length === 0 ? (
-          <div className="text-center py-4 text-sm text-text-muted">
-            <svg viewBox="0 0 24 24" className="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="3" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <path d="M21 15l-5-5L5 21" />
-            </svg>
-            <p>当前幻灯片暂无图片</p>
-            <p className="text-xs mt-1">添加图片后将自动显示</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-xs text-text-secondary cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={useSlideImages}
-                  onChange={(e) => setUseSlideImages(e.target.checked)}
-                  className="rounded border-border"
-                />
-                使用幻灯片中的图片进行布局
-              </label>
-              <button
-                onClick={() => setSelectedSlideImageIds(
-                  selectedSlideImageIds.length === slideImages.length 
-                    ? [] 
-                    : slideImages.map(img => img.id)
-                )}
-                className="text-xs text-primary hover:text-primary/80"
-              >
-                {selectedSlideImageIds.length === slideImages.length ? '取消全选' : '全选'}
-              </button>
+        <div className="section-content">
+          {slideImages.length === 0 ? (
+            <div className="text-center py-6 text-sm text-theme-muted">
+              <svg viewBox="0 0 24 24" className="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="3" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <p>当前幻灯片暂无图片</p>
+              <p className="text-xs mt-1">添加图片后将自动显示</p>
             </div>
-            
-            <div className="flex flex-wrap gap-2 p-2 bg-surface-secondary/50 rounded-lg">
-              {slideImages.map((img, index) => (
+          ) : (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-xs text-theme-secondary cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useSlideImages}
+                    onChange={(e) => setUseSlideImages(e.target.checked)}
+                    className="w-4 h-4 rounded border-theme accent-primary-500"
+                  />
+                  使用幻灯片中的图片进行布局
+                </label>
                 <button
-                  key={img.id}
-                  onClick={() => toggleSlideImageSelection(img.id)}
-                  className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
-                    selectedSlideImageIds.includes(img.id)
-                      ? 'bg-primary text-white'
-                      : 'bg-surface-secondary text-text-secondary hover:bg-surface-secondary/80'
-                  }`}
+                  onClick={() => setSelectedSlideImageIds(
+                    selectedSlideImageIds.length === slideImages.length 
+                      ? [] 
+                      : slideImages.map(img => img.id)
+                  )}
+                  className="text-xs text-primary-500 hover:text-primary-400 transition-colors"
                 >
-                  {img.name || `图片 ${index + 1}`}
+                  {selectedSlideImageIds.length === slideImages.length ? '取消全选' : '全选'}
                 </button>
-              ))}
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {slideImages.map((img, index) => (
+                  <button
+                    key={img.id}
+                    onClick={() => toggleSlideImageSelection(img.id)}
+                    className={`chip ${selectedSlideImageIds.includes(img.id) ? 'chip-active' : ''}`}
+                  >
+                    {img.name || `图片 ${index + 1}`}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex items-center justify-between text-xs text-theme-muted pt-2 border-t border-theme">
+                <span>已选 {selectedSlideImageIds.length} / {slideImages.length} 张</span>
+                {useSlideImages && selectedSlideImageIds.length > 0 && (
+                  <span className="text-green-500">可用于布局</span>
+                )}
+              </div>
             </div>
-            
-            <div className="flex items-center justify-between text-xs text-text-muted">
-              <span>已选 {selectedSlideImageIds.length} / {slideImages.length} 张</span>
-              {useSlideImages && selectedSlideImageIds.length > 0 && (
-                <span className="text-green-400">可用于布局</span>
-              )}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
       {/* Layout Category Tabs */}
-      <section>
+      <section className="section-container">
         <div className="section-header">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="3" y="3" width="7" height="7" />
             <rect x="14" y="3" width="7" height="7" />
             <rect x="3" y="14" width="7" height="7" />
             <rect x="14" y="14" width="7" height="7" />
           </svg>
           <span>图片布局</span>
-          <span className="text-xs text-text-muted ml-auto">{IMAGE_LAYOUT_OPTIONS.length} 种</span>
+          <span className="ml-auto text-xs text-theme-muted">{IMAGE_LAYOUT_OPTIONS.length} 种</span>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex gap-1 mb-3 overflow-x-auto pb-1">
-          {(Object.keys(categoryInfo) as LayoutCategory[]).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs whitespace-nowrap transition-colors ${
-                selectedCategory === cat
-                  ? 'bg-primary text-white'
-                  : 'bg-surface-secondary text-text-secondary hover:bg-surface-secondary/80'
-              }`}
-            >
-              <span className={selectedCategory === cat ? 'text-white' : categoryInfo[cat].color}>
-                {categoryInfo[cat].icon}
-              </span>
-              {categoryInfo[cat].name}
-            </button>
-          ))}
-        </div>
-        
-        {/* Layout Grid */}
-        <div className="grid grid-cols-3 gap-2">
-          {currentLayouts.map((option) => {
-            const imageCount = useSlideImages ? selectedSlideImageIds.length : uploadedImages.length
-            const isDisabled = isLoading || imageCount < option.minImages
-            const needsMore = imageCount < option.minImages
-            
-            return (
+        <div className="section-content space-y-4">
+          {/* Category Tabs */}
+          <div className="category-tabs">
+            {(Object.keys(categoryInfo) as LayoutCategory[]).map((cat) => (
               <button
-                key={option.id}
-                onClick={() => handleLayoutClick(option.id)}
-                disabled={isDisabled}
-                className={`layout-item ${selectedLayout === option.id ? 'layout-item-active' : ''} ${isDisabled ? 'opacity-50' : ''}`}
-                title={`${option.name}\n${option.description}\n需要 ${option.minImages}-${option.maxImages} 张图片`}
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`category-tab ${selectedCategory === cat ? 'category-tab-active' : ''}`}
               >
-                <div className={`icon-box ${selectedLayout === option.id ? 'icon-box-primary' : ''}`}>
-                  {layoutIcons[option.id]}
-                </div>
-                <span className="text-xs text-center leading-tight">{option.name}</span>
-                <span className={`text-[10px] ${needsMore ? 'text-orange-400' : 'text-text-muted'}`}>
-                  {needsMore ? `需${option.minImages}张` : `${option.minImages}-${option.maxImages}张`}
+                <span className={selectedCategory === cat ? '' : categoryInfo[cat].color}>
+                  {categoryInfo[cat].icon}
                 </span>
+                {categoryInfo[cat].name}
               </button>
-            )
-          })}
+            ))}
+          </div>
+          
+          {/* Layout Grid */}
+          <div className="grid grid-cols-3 gap-2">
+            {currentLayouts.map((option) => {
+              const imageCount = useSlideImages ? selectedSlideImageIds.length : uploadedImages.length
+              const isDisabled = isLoading || imageCount < option.minImages
+              const needsMore = imageCount < option.minImages
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => handleLayoutClick(option.id)}
+                  disabled={isDisabled}
+                  className={`layout-item ${selectedLayout === option.id ? 'layout-item-active' : ''} ${isDisabled ? 'opacity-50' : ''}`}
+                  title={`${option.name}\n${option.description}\n需要 ${option.minImages}-${option.maxImages} 张图片`}
+                >
+                  <div className={`icon-box ${selectedLayout === option.id ? 'icon-box-primary' : ''}`}>
+                    {layoutIcons[option.id]}
+                  </div>
+                  <span className="text-xs text-center leading-tight">{option.name}</span>
+                  <span className={`text-[10px] ${needsMore ? 'text-orange-500' : 'text-theme-muted'}`}>
+                    {needsMore ? `需${option.minImages}张` : `${option.minImages}-${option.maxImages}张`}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </section>
 
       {/* Alignment Section */}
-      <section>
+      <section className="section-container">
         <div className="section-header">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 10H3" />
             <path d="M21 6H3" />
             <path d="M21 14H3" />
@@ -986,80 +985,82 @@ export default function ImageLayoutPanel() {
           <span>对齐与分布</span>
         </div>
         
-        <div className="grid grid-cols-4 gap-2">
-          {alignOptions.map((option) => (
-            <button
-              key={option.id}
-              onClick={() => handleAlignClick(option)}
-              disabled={isLoading}
-              className={`tool-btn ${selectedAlign === option.id ? 'tool-btn-active' : ''} disabled:opacity-50`}
-              title={option.name}
-            >
-              {option.icon}
-              <span className="text-xs">{option.name.slice(0, 4)}</span>
-            </button>
-          ))}
+        <div className="section-content">
+          <div className="grid grid-cols-4 gap-2">
+            {alignOptions.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => handleAlignClick(option)}
+                disabled={isLoading}
+                className={`tool-btn ${selectedAlign === option.id ? 'tool-btn-active' : ''}`}
+                title={option.name}
+              >
+                {option.icon}
+                <span className="text-[11px]">{option.name.slice(0, 4)}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Quick Actions */}
-      <section>
+      <section className="section-container">
         <div className="section-header">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
           </svg>
           <span>快捷操作</span>
         </div>
         
-        <div className="flex flex-wrap gap-2">
-          <button 
-            onClick={() => showInfo('统一尺寸功能开发中...')}
-            className="btn-secondary text-sm"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 mr-1.5 inline" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <path d="M3 9H21" />
-              <path d="M9 21V9" />
-            </svg>
-            统一尺寸
-          </button>
-          <button 
-            onClick={() => showInfo('批量裁剪功能开发中...')}
-            className="btn-secondary text-sm"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 mr-1.5 inline" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 16V8A2 2 0 0 0 19 6H5A2 2 0 0 0 3 8V16A2 2 0 0 0 5 18H19A2 2 0 0 0 21 16Z" />
-              <path d="M7 6V4A2 2 0 0 1 9 2H15A2 2 0 0 1 17 4V6" />
-            </svg>
-            批量裁剪
-          </button>
-          <button 
-            onClick={() => showInfo('智能排序功能开发中...')}
-            className="btn-secondary text-sm"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 mr-1.5 inline" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 3V21" />
-              <path d="M19 12L12 19L5 12" />
-            </svg>
-            智能排序
-          </button>
+        <div className="section-content">
+          <div className="flex flex-wrap gap-2">
+            <button 
+              onClick={() => showInfo('统一尺寸功能开发中...')}
+              className="btn-secondary"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9H21" />
+                <path d="M9 21V9" />
+              </svg>
+              统一尺寸
+            </button>
+            <button 
+              onClick={() => showInfo('批量裁剪功能开发中...')}
+              className="btn-secondary"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 16V8A2 2 0 0 0 19 6H5A2 2 0 0 0 3 8V16A2 2 0 0 0 5 18H19A2 2 0 0 0 21 16Z" />
+                <path d="M7 6V4A2 2 0 0 1 9 2H15A2 2 0 0 1 17 4V6" />
+              </svg>
+              批量裁剪
+            </button>
+            <button 
+              onClick={() => showInfo('智能排序功能开发中...')}
+              className="btn-secondary"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 3V21" />
+                <path d="M19 12L12 19L5 12" />
+              </svg>
+              智能排序
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Tips */}
-      <section className="card bg-surface-secondary/50">
-        <div className="flex items-start gap-3">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-accent-blue flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 16v-4M12 8h.01" />
-          </svg>
-          <div className="text-xs text-text-muted">
-            <p className="font-medium text-text-secondary mb-1">使用提示</p>
-            <p>1. 上传图片或获取幻灯片中的图片</p>
-            <p>2. 选择布局分类，点击布局样式一键排版</p>
-            <p>3. 每种布局显示所需的最少图片数量</p>
-            <p>4. 对齐和分布功能可用于已添加的图片</p>
-          </div>
+      <section className="info-box">
+        <svg viewBox="0 0 24 24" className="info-box-icon w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4M12 8h.01" />
+        </svg>
+        <div className="info-box-content">
+          <p className="info-box-title">使用提示</p>
+          <p>1. 上传图片或获取幻灯片中的图片</p>
+          <p>2. 选择布局分类，点击布局样式一键排版</p>
+          <p>3. 每种布局显示所需的最少图片数量</p>
+          <p>4. 对齐和分布功能可用于已添加的图片</p>
         </div>
       </section>
     </div>
